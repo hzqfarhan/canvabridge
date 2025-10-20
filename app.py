@@ -3,8 +3,11 @@ import requests, json
 
 app = Flask(__name__)
 
-BOT_TOKEN = "8405557217:AAFL91qvTZ26Zd-C1PGw9tJgi6WzcOJTkYs"
-CHAT_ID = "-2072607718600"
+import os
+
+BOT_TOKEN = os.getenv("BOT_TOKEN")
+CHAT_ID = os.getenv("CHAT_ID")
+
 
 @app.route("/")
 def home():
