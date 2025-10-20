@@ -7,6 +7,9 @@ app = Flask(__name__)
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 CHAT_ID = os.getenv("CHAT_ID")
 
+print("Loaded BOT_TOKEN:", BOT_TOKEN)
+print("Loaded CHAT_ID:", CHAT_ID)
+
 @app.route("/")
 def home():
     return "✅ Canva Webhook Receiver Active"
