@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 # Environment variables from Render
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-CHAT_ID = os.getenv("CHAT_ID")
+CHAT_ID = os.getenv("CHAT_ID")  # Example: -1002607718600 (for a channel)
 
 print("Loaded BOT_TOKEN:", BOT_TOKEN)
 print("Loaded CHAT_ID:", CHAT_ID)
@@ -19,20 +19,27 @@ def canva_webhook():
     data = request.get_json()
     print("Received from Canva:", json.dumps(data, indent=2))
 
-    # Convert Canva data into readable text
-    message = f"📢 *Canva Incident Update*\n\n```{json.dumps(data, indent=2)}```"
+    # Prepare message in HTML format (Telegram-safe)
+    message = f"📢 <b>Canva Incident Update</b>\n\n<pre>{json.dumps(data, indent=2)}</pre>"
 
-    # Send message to Telegram
+    # Send to Telegram channel
     telegram_url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
     response = requests.post(
         telegram_url,
-        data={"chat_id": CHAT_ID, "text": message, "parse_mode": "Markdown"}
+        data={
+            "chat_id": CHAT_ID,
+            "text": message,
+            "parse_mode": "HTML",
+            "disable_web_page_preview": True
+        }
     )
 
-    # Log Telegram response
+    # Log Telegram response for debugging
     print("Telegram response:", response.text)
 
     return "ok"
 
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
