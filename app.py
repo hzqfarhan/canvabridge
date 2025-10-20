@@ -23,9 +23,10 @@ def canva_webhook():
 
     # Send message to Telegram
     requests.post(
-        f"https://api.telegram.org/bot{8405557217:AAFL91qvTZ26Zd-C1PGw9tJgi6WzcOJTkYs}/sendMessage",
-        data={"chat_id": CHAT_ID, "text": message, "parse_mode": "Markdown"}
-    )
+    f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage",
+    data={"chat_id": CHAT_ID, "text": message, "parse_mode": "Markdown"}
+)
+
     return "ok"
 
 if __name__ == "__main__":
