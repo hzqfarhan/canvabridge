@@ -1,13 +1,11 @@
 from flask import Flask, request
-import requests, json
+import requests, json, os
 
 app = Flask(__name__)
 
-import os
-
+# Environment variables from Render
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 CHAT_ID = os.getenv("CHAT_ID")
-
 
 @app.route("/")
 def home():
@@ -22,10 +20,14 @@ def canva_webhook():
     message = f"📢 *Canva Incident Update*\n\n```{json.dumps(data, indent=2)}```"
 
     # Send message to Telegram
-    requests.post(
-    f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage",
-    data={"chat_id": CHAT_ID, "text": message, "parse_mode": "Markdown"}
-)
+    telegram_url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
+    response = requests.post(
+        telegram_url,
+        data={"chat_id": CHAT_ID, "text": message, "parse_mode": "Markdown"}
+    )
+
+    # Log Telegram response
+    print("Telegram response:", response.text)
 
     return "ok"
 
